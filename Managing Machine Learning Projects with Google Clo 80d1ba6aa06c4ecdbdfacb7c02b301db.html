@@ -1,0 +1,647 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Managing Machine Learning Projects with Google Cloud</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="8af0ea18-7d42-40a3-b466-4d2fd7101a0b" class="page sans"><header><img class="page-cover-image" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/notion_ml_cover.jpg" style="object-position:center 45.489999999999995%"/><div class="page-header-icon page-header-icon-with-cover"><img class="icon" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/apple-icon.png"/></div><h1 class="page-title">Managing Machine Learning Projects with Google Cloud</h1></header><div class="page-body"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e71c2d6c-48fd-4058-8a86-0c00cf516785"><div style="font-size:1.5em"><span class="icon">🔗</span></div><div style="width:100%">Offered by <a href="https://www.coursera.org/learn/machine-learning-business-professionals">Coursera</a>.</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="d1e84bf1-53c2-47f4-a7ca-5e7faad00047"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">Previously this course was known as <strong>Machine Learning for Business Professionals</strong>.</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="0cedb972-bfc9-4f31-8867-b06e2f576577"><div style="font-size:1.5em"><span class="icon">📆</span></div><div style="width:100%"><mark class="highlight-pink"><strong>Syllabus </strong></mark><mark class="highlight-pink_background">Week 1: </mark><strong><mark class="highlight-pink_background">What is ML?  </mark></strong><mark class="highlight-pink_background">1 - 11 | Week 2: </mark><strong><mark class="highlight-pink_background">Employing ML</mark></strong><mark class="highlight-pink_background"> 12 - 26 | Week 3: </mark><strong><mark class="highlight-pink_background">Discovering ML Use Cases </mark></strong><mark class="highlight-pink_background">27 - 37 | Week 4:</mark><strong><mark class="highlight-pink_background"> How to be successful at ML </mark></strong><mark class="highlight-pink_background">38 - 47</mark><strong><mark class="highlight-pink_background"> </mark></strong></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="408531c3-c7ca-4289-b631-5a5e34df8709"><div style="font-size:1.5em"><span class="icon">👨‍🏫</span></div><div style="width:100%"><strong><mark class="highlight-teal">Teachers </mark></strong><mark class="highlight-teal_background">Carolyn Ujcic, Lak Lakshmanan, Valentine (Val) Fontana</mark></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9bcb86fb-2116-4c4e-9ac8-1a62b8b1d981"><div style="font-size:1.5em"><span class="icon">📒</span></div><div style="width:100%">The formatting guidelines of this note is given on the end page.</div></figure><ol id="86a8efd5-b3a6-4b03-9049-e3c96b7e0f62" class="numbered-list" start="1"><li><mark class="highlight-blue">Def: </mark><strong>ML (Machine Learning) is a way to get predictive insights from data to make repeated decisions.</strong></li></ol><ol id="30d0c8ad-1eb4-40ac-92ce-c50ff4c44719" class="numbered-list" start="2"><li><mark class="highlight-blue">Backward looking vs forward looking data:</mark><ul id="d10ae868-b9b1-4a97-baeb-c496d1ef6907" class="bulleted-list"><li>Most analytics in your business is probably backward-looking, where you look at historical data to calculate metrics or identify trends.</li></ul><ul id="cf775c7e-599a-433f-84f2-fa4ca52b10fd" class="bulleted-list"><li>Predictive analytics<strong><em> </em></strong>are forward looking.</li></ul><ul id="ff54c687-1092-49ef-bbff-9846503459f0" class="bulleted-list"><li>A business analyst&#x27;s reviews a report and sees that the demand is increasing for a specific product in a specific region. The analysts then suggests a new price for that product in that region to increase profit. Now, the business analyst is making a predictive insight, but is that scalable? Can that business analysts make such a decision for every product and every region? Can they dynamically adjust the price every second based on how many people want that item at that very instant?<strong> In order to make decisions around predictive insights repeatable, you need machine learning.</strong></li></ul><figure id="80d1ba6a-a06c-4ecd-bdfa-cb7c02b301db" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled.png"><img style="width:578px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled.png"/></a></figure><figure id="aae2ba8a-1eb7-43d5-93a7-512f18cc0a5a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%201.png"><img style="width:594px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%201.png"/></a></figure><p id="ac27c99d-f824-4dcb-91c5-1e8ac9d3d971" class=""><strong>standard algorithms</strong> - these algorithms exist independently of the use case.</p></li></ol><ol id="6cf28fc0-b023-4b7b-97d3-23e7c46f4733" class="numbered-list" start="3"><li>ML models aren&#x27;t <mark class="highlight-blue">programmed </mark>with traditional logic, like if, this, then, that. Instead, you program them by giving them examples and letting them come up with the logic. Models will be as good as data.</li></ol><ol id="631c6f16-2441-4767-b4e3-93d0bce0b52d" class="numbered-list" start="4"><li><mark class="highlight-blue">Qualities of good data:</mark> broad coverage, clean &amp; complete. The more wrong data (dirty data) you have, the more correct data you will need to provide to counterbalance.<figure id="8309d9ef-a259-488b-9368-b7066f44006a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%202.png"><img style="width:309px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%202.png"/></a></figure></li></ol><ol id="b282bf9b-6c3b-4368-9657-b31eb837a461" class="numbered-list" start="5"><li> <mark class="highlight-blue">Difference b/w ML and AI</mark><figure id="60cfe7f1-6e50-4cd4-a054-5e545a04be0f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%203.png"><img style="width:288px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%203.png"/></a></figure><ul id="40d2ed4a-50ab-45e8-9052-d4c45588f6f6" class="toggle"><li><details open=""><summary>What are expert programs?</summary><p id="9386b541-c152-4054-9fe8-93f9cb0d3d49" class="">AI programs designed to use if-then rules to emulate human inference and decision-making. They work well when you already know the logic. To create them, you first collect all of the domain of knowledge like a table of diseases and their symptoms. Then you convert this knowledge into if-then rules. The problem with these experts systems is that there aren&#x27;t that many use cases where you can fully capture all the logic. In medicine, textbooks capture a lot of information for a doctor to make a diagnosis, but they don&#x27;t capture everything. However, one area where it can be successful is in process control. In Japan, their trains have excellent on-time performance. Researchers in Japan have created expert systems that will adjust train schedules when there&#x27;s a disruption in the same way the best human operators would. Another challenge with these systems is that it is expensive to code up that logic in the form of programs. Many times the logic is just a heuristic, and you spend years maintaining and fixing problems in the heuristic, as you discover the cases where it doesn&#x27;t work. Why is ML a better tool than expert systems in many cases? Well, let&#x27;s say you have a record of customer browsing activity on your shopping site, but you can&#x27;t describe the logic for determining whether a customer will buy. For example, your logs might indicate that some small portion of people who looked at sunscreen ultimately bought sandals, and none of the people who looked at towels did. With ML, the model can learn based on customers&#x27; activity, how likely they are to buy sandals. Many business problems like this one are a better fit for ML because it is hard to articulate the logic. But we do have examples of what actually happened historically.</p></details></li></ul></li></ol><ol id="a8de2f46-bb09-414a-8820-b15b192e5005" class="numbered-list" start="6"><li><mark class="highlight-blue">Traditional </mark>BI<mark class="highlight-blue"> </mark>dashboards and data analytics - historical data, <mark class="highlight-blue">(vs)</mark> <mark class="highlight-blue">predictive analytics</mark> - unknown data.<blockquote id="d3a59043-1d71-4ead-8a7c-9edab2b86930" class="">ML works for making repeated decisions, not occasional ones. As you think about applying ML in your business, I want you to remember this part of the definition. It is often where you will get the most business value. That&#x27;s because many of the benefits of ML, including scalability and efficiency, are only realized when you use it repeatedly.</blockquote><p id="66ba6c53-f98d-409a-a8bd-5c66c801f354" class=""><strong>Key ingredients for a recipe for ML: data, standard algorithms, predictive insights, and repeated decisions.</strong></p><p id="deb4a89f-873d-4d19-8d61-dd144718f381" class="">Where can we use ML? Quality control of a Space Shuttle? [less data] What about an annual sales forecast? [not frequent, also many statistical tools present] What about trying to model the likelihood that a truck might break down? [infrequent] But what if I told you that each day, mechanics decide whether they should inspect vehicles for issues to find if the truck is likely to break down? Then it becomes a frequent decision? We can use ML here.</p></li></ol><ol id="4883b4e1-5332-453c-a005-d6ca5d523633" class="numbered-list" start="7"><li>Normal life <mark class="highlight-blue">eg</mark>: Do you get less spam in your inbox, or have you used a voice assistant to call your mom? Or search within Google Photos to find the best picture of your dog, or you might have watched that YouTube video that was recommended to you on the YouTube homepage. Think about your business processes. Where do you have major pain points? How might ML help?<ul id="bc53bf2f-5a1b-470f-9cda-059045de83bf" class="bulleted-list"><li>Aucnet built a real-time car image recognition system powered by Google Clouds ML technologies which reduced the time it took to list a car for auction from 20 minutes to only two to three minutes.</li></ul><ul id="69e8b5bc-58d8-4c6c-8ca8-f3bc4a846532" class="bulleted-list"><li>Using Google&#x27;s Dialogflow chat bot technology, Domino&#x27;s was able to improve the ordering experience even more for their customers. The bot can now handle more difficult or complex orders from customers.<figure id="1f424d25-0579-46dc-a9a0-ced74244d8bb" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%204.png"><img style="width:563px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%204.png"/></a></figure></li></ul><p id="5f982602-ab83-4694-824a-f3ad25149914" class="">
+</p></li></ol><ol id="4cd46805-a6d5-4ace-89a0-a3a9bdc1da97" class="numbered-list" start="8"><li><mark class="highlight-teal">Lab: Creating a Pizza bot with Diagflow and Cloud Image Classifier with Auto ML (Vision API). </mark><p id="70e9fd9f-95c6-4fa6-852e-74fb5e482d5b" class="">The<strong> </strong><em><strong>Vision API</strong></em> is an API that uses machine learning and other Google services to extract information from images. It can do a variety of things, whether it&#x27;s detecting the presence of certain classes within the image. Detecting and extracting text, determining if the image is safe to serve, or detecting the presence of corporate logos. Unlike the Vision API, <em><strong>AutoML </strong></em>Vision can be trained to use whatever classes you need for your business use case. You provide the labelled datasets.</p></li></ol><ol id="3b5536e2-89ad-49af-8773-27d5662bb3c9" class="numbered-list" start="9"><li>Machine learning has been around since the 1970s, when it was used in fields such as astronomy.<strong> </strong><mark class="highlight-blue">So why the popularity now?</mark><strong> </strong>PART 1:<p id="4142e802-3a1a-425b-8f99-6286a4ec690d" class="">
+</p><figure id="70580ea8-ce21-4d33-8761-0045614a2847" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%205.png"><img style="width:558px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%205.png"/></a></figure><figure id="2b518e71-d071-464b-b51a-cfb0a6dee1ce" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%206.png"><img style="width:516px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%206.png"/></a></figure><p id="e7e06c0a-1380-4539-899a-df7c6d588750" class="">The <mark class="highlight-purple">cost of sending data </mark>over the Internet in the US dropped from $1,200 per megabit per second in 1998 to $75 in 2005, that&#x27;s a 94% decrease. During the same period, the <mark class="highlight-purple">cost of storage</mark> also fell significantly. Not just for disk storage, which is the sort of storage necessary for retrieving archived information, but also for RAM memory, which is the sort of storage necessary for big and fast applications. In 2005, the cost of 1 gigabyte of disk storage was 0.2% of what it was 10 years earlier, and the cost of RAM was less than 0.1% of what it was 10 years earlier. Then in 2007 the <mark class="highlight-purple">iPhone </mark>launched, bringing the desktop web to phones. Users started consuming and generating data constantly.</p></li></ol><ol id="df840860-5d2c-4da4-865c-d65ba07f3fc0" class="numbered-list" start="10"><li>PART 2: There are also <mark class="highlight-purple">changes related to algorithms.</mark><strong> </strong>There have been lots of ML algorithms before. <em><strong>Linear regression, decision trees, genetic algorithms, support vector machines,</strong></em> just to name a few. One in particular has revolutionized machine learning recently, neural networks. But for complicated mathematical reasons, those deep layers of neurons didn&#x27;t work in computing. So people used <em><strong>shallow neural networks</strong></em>, which weren&#x27;t very powerful. But then came advances in what we call <em><strong>deep neural networks</strong></em><strong>.</strong> Many advances were made by Geoff Hinton at the University of Toronto. He and his team of students got deep learning to finally work, with the help of many other researchers. These deep neural networks are examples of <em><strong>deep learning, </strong></em>which propelled ML forward even further. One key advance was a special type of layer in a neural network called a <em><strong>convolutional neural network</strong></em><strong>, </strong>or<strong> </strong><em><strong>CNN</strong></em><strong>. </strong><mark class="highlight-purple">Distributed computing</mark><em><strong> </strong></em>allowed large computing jobs to be split into manageable pieces. But distributed computing is subject to diminishing returns because there are network, speed, and reliability issues when computers have to talk to each other. <mark class="highlight-purple">GPUs</mark>, which are built as graphics cards for rendering and games, turn out to be really good at accelerating machine learning computations. Andrew Ng demonstrated in 2006 that GPUs function as ML accelerators. Between AlexNet, which started off the deep learning revolution and Neural Architecture Search, which powers Google&#x27;s AutoML, the computational cost of training grew 100,000 times greater. That&#x27;s because when you have more layers in a deep learning model, you need more data and your compute needs become more expensive.<figure id="3d23e971-cd43-4d7a-b982-0e3f73efa430" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%207.png"><img style="width:610px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%207.png"/></a></figure><p id="b43ad367-2b24-4863-81e7-8534bf41db57" class="">Compute performance has hit a plateau (disobeying <em><strong>Moore&#x27;s Law</strong></em> because in the past three years, growth has slowed dramatically as manufacturers run up against fundamental limits). One solution is to limit the power consumption of a chip. You can do that by building what are called application-specific chips, or <mark class="highlight-purple">ASICs</mark>. Google designed new types of hardware designed specifically for ML. The tensor processing unit, or <em><strong>TPU</strong></em>, is specifically optimized for ML. And it has more memory and a faster processor. Google has been working on the TPU for several years. And has made it available to other businesses.</p><p id="5568a369-21e5-4570-b3af-769b301117eb" class="">Because of all of this technology, new hardware, distributed computing, new algorithms, it became feasible for more businesses to use ML, but it still wasn&#x27;t easy. Part of the problem was that few ML software frameworks were designed for industry scale usage. If companies wanted to do ML, they would need the expertise to create their own frameworks. And that was a steep cost, especially because ML talent is still relatively rare. But over time, more and more ML frameworks are becoming available and are making it possible to use ML at high levels of abstraction. One such framework is TensorFlow. But even with frameworks like TensorFlow, implementing a custom model requires technical expertise. That&#x27;s where <mark class="highlight-purple">cloud technology </mark>comes in for businesses that want to run ML models they already have in the cloud, but for whom the economics of owning the infrastructure doesn&#x27;t make sense. Additionally, TPUs scale linearly, so you can train faster by running on more cores, which is another benefit of the economics of the cloud. </p><figure id="8d8802ca-18fc-4f65-801f-9026f2f9139a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%208.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%208.png"/></a></figure><figure id="ff8b3839-77d9-49d4-9fcb-dddf1d1e518e" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%209.png"><img style="width:269px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%209.png"/></a></figure><p id="6958e094-6227-4c7c-9b9c-11b865a8b021" class="">A common paradigm is to run a fast but not great model locally. But use the cloud when a more accurate answer is needed. Thus, the cloud is recommended for most ML use cases.</p></li></ol><ol id="90925bed-10e2-4ee2-a3c9-617ac523e953" class="numbered-list" start="11"><li> <mark class="highlight-blue">Using AI Responsibly</mark> -  Google Principles<figure id="dbf7bda0-21e5-4dde-bc46-62b7d0d18166" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2010.png"><img style="width:576px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2010.png"/></a></figure><p id="2626b4f1-ee7f-4d10-b22f-62d764df24ad" class="">Some ways to put these principles into action:</p><figure id="eca393b1-b58c-4082-b4b3-d08091fe6589" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2011.png"><img style="width:578px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2011.png"/></a></figure><figure id="cbceebfb-56ca-40e3-950a-1d1cb926871f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2012.png"><img style="width:556px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2012.png"/></a></figure><p id="89451de7-bdc3-4387-8378-23bb7f097aa0" class="">[2 from Week 2]</p></li></ol><ol id="29592111-eb3e-4fee-9a7f-4e385914f3cd" class="numbered-list" start="12"><li>Machine learning involves learning from examples. An example consists of <mark class="highlight-blue">labels </mark>and <mark class="highlight-blue">features</mark>. A label is just the true answer for an input. If you&#x27;re trying to predict how much a customer in a bank will deposit in a given year, the amount that was actually deposited by that customer in that bank in a particular year is the label for the example. When we train a model, we compare the prediction for that example against the label for that example and use that information to update the model. <mark class="highlight-red">[Phases of ML 13 - 19]</mark><figure id="2d377a47-6c2c-4daa-8777-8a087d33ce60" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2013.png"><img style="width:565px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2013.png"/></a></figure><p id="33d01cde-899a-44c2-bd16-483a269f0600" class="">
+</p></li></ol><ol id="c79768db-ce01-42cf-aa77-6a7cf521c076" class="numbered-list" start="13"><li>Labels can be either numbers or they can be categories. The amount that somebody deposits in a year, for example, that&#x27;s a number. Whether that amount is high or it&#x27;s low, that&#x27;s a category.<figure id="9d2d0612-6e5e-4643-89a9-fa077830ed47" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2014.png"><img style="width:288px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2014.png"/></a></figure><p id="2a45cf4e-bc75-453c-a764-0ca6077726b2" class="">The features are the inputs to the model or a distinctive attribute. There are other forms of machine learning that don&#x27;t require a label, but they&#x27;re less mature. In the case of images, the pixels of the image might be enough as features.</p></li></ol><ol id="79df5d0f-5253-4372-a25d-9f326088697a" class="numbered-list" start="14"><li><mark class="highlight-blue">Choosing the wrong label can cause problems.</mark><figure id="c7126fe8-f431-42e0-bffb-f6e07763b69a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2015.png"><img style="width:293px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2015.png"/></a></figure><p id="8cc7547d-18ec-4bf2-ba7f-4b21f99d36f5" class="">Aucknet </p><ul id="4aad9bdd-85c9-403e-ac02-e4d20653f119" class="bulleted-list"><li>feature - historical data (pictures) on condition of Tyre </li></ul><ul id="dc78aa98-9233-406b-98d2-be833888022e" class="bulleted-list"><li>label - H.D data on price sold for</li></ul><ul id="1bfad8aa-fea2-43a6-9c1c-aed8fc722c00" class="bulleted-list"><li>regression problem</li></ul><p id="9069d46a-c07f-48d4-9cda-a35e0f40a2a6" class="">Youtube </p><ul id="9a9e7904-f550-4460-8130-f3359e72bc19" class="bulleted-list"><li>feature - country, how many of the people who watched this current video went to watch the next video, aggregate history of all of it to one billion plus users</li></ul><ul id="3f941c7f-6771-437b-ac3d-b340718a2326" class="bulleted-list"><li>label - next video (H.D) because we identify videos by a video ID, the video ID is a label. </li></ul><ul id="893176b1-a350-41b6-9631-e32d204a215c" class="bulleted-list"><li>classification problem  [see: Week 2&gt; ML Terminology in Context]</li></ul></li></ol><ol id="1b93dab1-0f4b-4dad-b13a-add45d4cb3a8" class="numbered-list" start="15"><li> <mark class="highlight-blue">Acquiring labelled data</mark> - need to have all required data in one place. <figure id="965a68af-f846-43c7-8cff-e151daeee9a1" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2016.png"><img style="width:305px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2016.png"/></a></figure><figure id="3fadff51-9a46-4d0d-aaac-cf8cce75764f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2017.png"><img style="width:263px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2017.png"/></a></figure><p id="c4a68a03-9579-4f5b-a29a-cec797b1f2a4" class="">AutoML offers labeling service.</p></li></ol><ol id="4131852f-dedf-4334-b7af-747597d79f60" class="numbered-list" start="16"><li>Thus summarizing,<figure id="881def54-5812-4819-91ff-73f241c029ca" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2018.png"><img style="width:268px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2018.png"/></a></figure></li></ol><ol id="d4efdfb4-c464-4228-b50e-fff13f0e318c" class="numbered-list" start="17"><li>Let&#x27;s say you&#x27;re running a retail website, where you&#x27;re selling lots of different items. surprise: items that user might not have otherwise bought, clicks: novelty. <figure id="9878f028-d391-43de-871b-241dc4330180" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2019.png"><img style="width:317px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2019.png"/></a></figure><p id="a68776a4-d32a-4632-ab65-febaf1283df8" class="">There is a difference between popular in the sense that things are rated highly and popular (4) in the sense that people buy them a lot (2). The hardest part of a recommendation system is not the algorithm because the algorithm is standard. It&#x27;s not the data because you probably have purchase transactions data already. <strong>In this case of a recommendation system, one of the hardest parts is getting the objective right.</strong> In reality, the objective that most retailers pick will be a weighted combination of all these factors. The retailers will typically tweak the relative weights as the company strategy changes. There is no right answer, it&#x27;s all a trade-off. So discuss what the right objective is with your business stakeholders.</p></li></ol><ol id="d50c87fa-247f-46b1-8512-8e3a4b10b1b3" class="numbered-list" start="18"><li>When we <mark class="highlight-blue">train a model,</mark> we compare the prediction of that model against the label and use that information to update the model, and that part is basically just applying the standard machine learning algorithm to your data. Although it&#x27;s possible to train a machine learning model only one time, t<strong>he best-performing machine learning models are trained continuously</strong> by taking a trained model from earlier and retraining it with new data. That&#x27;s because the world is always changing and only recent data will have a record of these newer changes. If you&#x27;ve built a workflow where humans label the data, then you&#x27;ve done half the work already. The next step is connecting their output to the model. Not only that, you set yourself up for success by keeping humans in the loop. Many people assume that this isn&#x27;t unnecessary, but <strong>for great machine learning, it absolutely is necessary to have humans in the loop.</strong><figure id="187dd679-c2f4-4c3b-8d1d-881fb87b4569" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2020.png"><img style="width:461px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2020.png"/></a></figure><p id="6667589f-bf37-4f6c-aed2-9de2c0d186f9" class="">For business problems, mostly you will probably use standard algorithms. People create new algorithms all the time and they compare them with previously known algorithms, but the improvements are very, very minor.</p></li></ol><ol id="d01fd6ee-b9a2-427d-8ae0-009189f1e010" class="numbered-list" start="19"><li><mark class="highlight-blue">How to get an idea on how good the model is?</mark><figure id="9c5b2b75-5041-477b-a703-7794a74d762f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2021.png"><img style="width:563px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2021.png"/></a></figure><p id="7d31c0a8-0724-4c9d-a9b4-b76401376f0a" class="">We don&#x27;t show the model all of the data that we have (why? original training data can&#x27;t evaluate - model memorize), instead we split that data into two parts. Maybe we show the model 80 percent of the data (<em><strong>training data</strong></em>), and have it learn from that, and then we try out the model on the remaining 20 percent (<em><strong>test data</strong></em>). Create a <em><strong>confusion matrix.</strong></em> Accuracy can be computed simply by finding the fraction of times that the model is correct.</p><figure id="57752a24-63d0-4dee-8c7c-ae12fae668b2" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2022.png"><img style="width:602px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2022.png"/></a></figure><p id="309da98e-3664-4309-8e65-05c96196c9de" class="">Usually accuracy is enough, but in some cases, you will be creating a machine learning model for rare occurrence. For example, you may be building a model to identify credit card fraud. The vast majority of transactions are not fraudulent. So, even if the model says, nothing is ever fraudulent, it&#x27;ll only get a very small fraction wrong. The accuracy will be something like 99.999 percent. In such cases, we use other metrics computed from the confusion matrix. Matrix that emphasize the performance on the rare stuff.</p><figure id="3451b290-4f35-4510-a75e-acc278715a81" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2023.png"><img style="width:632px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2023.png"/></a></figure><figure id="31bde057-ca19-43f9-ab0d-754fc3eef5b6" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2024.png"><img style="width:548px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2024.png"/></a></figure></li></ol><ol id="c0f6e4e8-c483-4073-8ef4-0ed88533af66" class="numbered-list" start="20"><li>Make different models [combination - diff features, complexity (neural n/w layers)] and select what works best.<figure id="c2b3c9c2-bc4d-48ea-981a-e01e7f961106" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2025.png"><img style="width:286px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2025.png"/></a></figure><p id="3a6daedd-b928-405c-9364-9cea1dcf67bd" class="">
+</p></li></ol><ol id="bcd7bb1a-feb3-4456-bb21-dca6313bd6a1" class="numbered-list" start="21"><li>The first stage of training looks like this.<figure id="61c74893-0d43-4a71-8ce2-fe9ab98b0d2d" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2026.png"><img style="width:592px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2026.png"/></a></figure><p id="780dfa00-e32e-480a-bbff-8e02b692500f" class="">The process of evaluation &amp; deployment looks like this.</p><figure id="dbe53016-67f7-4ff5-ae25-47fb86ad300a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2027.png"><img style="width:560px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2027.png"/></a></figure><p id="7940748d-16a0-4c90-a115-8b135f2b086b" class="">The more complete process looks like this.</p><figure id="7e6ef159-6a0c-4a77-85f0-1ac4262de4a2" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2028.png"><img style="width:1212px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2028.png"/></a></figure><p id="9cf4e73e-8787-453f-b46e-a1133bd96bdf" class="">What&#x27;s common to all of these questions? <mark class="highlight-blue">They&#x27;re decided by you,</mark> the creator of the model. Machine learning is not automatic, it is highly driven by the decisions that we make in terms of how we train the machine learning model. The human impact doesn&#x27;t stop with you. Maybe the model is selecting which customers are higher priority. So who&#x27;s calls you&#x27;re going to answer first? Maybe the model is selecting which products you&#x27;re going to recommend to a specific customer. Maybe the model is selecting which transactions are likely to be fraudulent, and that you are going to examine further. Maybe the model is selecting which trees are being cut illegally. The end customers of your business therefore see some kind of an effect because of the predictions of the model. They&#x27;re provided with some specific quality of service, or they get some kind of a product, or the wait in the long run queue. They see one product or they see another, they can go through their credit card purchase, or the transaction gets denied. Your end customers see the impact of the decisions that you make. So the decisions that you make as you do machine learning end up having an impact on the real world because of the way that the predictions of the machine learning model are going to get used.</p></li></ol><ol id="dc948244-4a21-452c-814a-db4cab9a5148" class="numbered-list" start="22"><li> More about <mark class="highlight-blue">bias </mark>in data:<figure id="f63eb945-1341-45a7-a11e-695b63d26222" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2029.png"><img style="width:598px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2029.png"/></a></figure><p id="5fa7f515-c45a-491d-8824-69bdaaba949e" class="">Human biases that exist in data because data found in the world has existing biases with regard to properties like gender, race, and sexual orientation. <mark class="highlight-purple">Selection bias </mark>happens because the subjects that get into our samples represent a privileged type of user. <mark class="highlight-purple">Confirmation bias </mark>refers to only looking for data which confirms our hypothesis. <em>eg :someone who buys a tie would look for men&#x27;s shirts. So we might restrict our data collection to only men&#x27;s apparel items. But women do wear ties</em>. An <mark class="highlight-purple">automation bias</mark> refers to the biases which crop up when the data we use is just the data that is easily automatable, the data that we can quickly get. <em>eg: If men&#x27;s apparel and women&#x27;s apparel are run by different parts of our organization, it is quite possible that this is why we might have collected only men&#x27;s shirt sales </em>or <em>a fancy digital data collection system at some locations, but other locations are still sending you faxes.</em></p><figure id="b1a5d9f7-1d21-4c6f-a55e-464cfc4e6ec7" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2030.png"><img style="width:600px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2030.png"/></a></figure><p id="50a2c010-d721-4e10-9b9d-e039e5d5c847" class="">So what&#x27;s the impact of biases in collecting data and labeling data? it attracts the entire pipeline. In machine learning, we begin with our data. So the biases in the original data are going to get reflected downstream in our models and consequently, they are going to result in biased outcomes. The result is that biases can appear at every point of the data pipeline. [<em>eg: model to find fraudulent transactions.]</em></p><figure id="45fbbae7-11d7-40cc-a95e-c6f5b0c490d2" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2031.png"><img style="width:538px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2031.png"/></a></figure><figure id="af50ef26-4da9-4daf-991a-9c4862bc225b" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2032.png"><img style="width:542px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2032.png"/></a></figure><p id="df3cd603-5675-4866-b2bb-0789035e6550" class=""><em>eg: a model to decide whether or not to make a loan was given </em></p><blockquote id="ac05c2ea-e650-4d87-82eb-d6bba7e8432d" class=""><mark class="highlight-brown">Machine learning models are trained on real world data, you may have removed the gender from your loan application process. But the use of occupation as an input will mean that gender leaks through. Occupations tend to be associated with specific genders. So by using occupation as an input to our machine learning model, that decides whether or not to extend a loan, we may be providing a backdoor entry to the use of gender. This property of machine learning models leads to reinforcing existing biases in society. It&#x27;s one of the things that we have to be on our guard against. It comes down to understanding our data, really understanding it, and understanding some of the implicit biases that ride along with that data. </mark></blockquote><figure id="98be7932-770f-40ab-b890-2bf20212b2ed" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2033.png"><img style="width:485px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2033.png"/></a></figure></li></ol><ol id="a0e88d5e-d9f3-43df-b478-d436ecfb12fc" class="numbered-list" start="23"><li><mark class="highlight-teal">Activity: Understanding Learned Relationships using the Embedding Projector Review</mark></li></ol><ol id="7185710a-0de9-4eb8-ad56-257a38e911fe" class="numbered-list" start="24"><li>We&#x27;ve built a model, <mark class="highlight-blue">how do we know whether the model is fair?</mark> One challenge is that there&#x27;s no one standard definition of fairness. Whether decisions are made by humans or by machines. Both in law and philosophy, this is a question that engenders lots of debate. This because defining fairness is difficult. <em>eg: blue &amp; orange people loan case scenario [see: Week 2&gt; Fairness in ML Part 1]. </em>As in eg. the group-unaware constraint holds that the thresholds are the same. The demographic parity constraint, requires that the same percentage within each subgroup will receive the loan, and the equal opportunity constraint requires that the same fraction within each subgroup, who can pay them off, will receive the loan. Now, none of these definitions is necessarily better than the other. Each of them has different mathematical properties, and you cannot satisfy them all at the same time, and which constraint you choose depends a lot on the context of the machine learning use case. But you&#x27;ve got to choose.</li></ol><ol id="34b5d89c-4568-4c1d-9100-6ffbe5914647" class="numbered-list" start="25"><li>Allison Woodruff &amp; her team asked different groups what is the <mark class="highlight-blue">appropriate definition of unfairness?</mark> The result varies greatly depending on who you&#x27;re speaking to and their ethical, legal and economic priorities. Unfairness, is not immediately obvious, and it requires asking nuanced, social, political and ethical questions. It takes a holistic analysis to consider which definition of fairness is appropriate for your project. They asked different groups, what is the appropriate definition of unfairness? The result varies greatly depending on who you&#x27;re speaking to and their ethical, legal and economic priorities. Unfairness, is not immediately obvious, and it requires asking nuanced, social, political and ethical questions. It takes a holistic analysis to consider which definition of fairness is appropriate for your project.<figure id="f4941174-2189-4eb3-994c-0de3d903cf36" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2034.png"><img style="width:546px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2034.png"/></a></figure><p id="bacd67c1-8dfa-41f7-945b-82e002c27fb4" class="">Checklist of data prone to bias related issues.: biometrics, race, skin color, religion, sexual orientation, socioeconomic status, income, country, location, health, language or dialect? For example, zip code or other geospatial data, is often correlated with socioeconomic status, and/or income. Image or video data, can reveal information about race, gender, and age.</p></li></ol><ol id="d06ac17d-ef71-429f-bd56-5eaf2471f5ee" class="numbered-list" start="26"><li><mark class="highlight-teal">Activity: Applying Fairness Concerns with the What-If tool Review</mark></li></ol><ol id="c4086bc2-00b9-477b-af37-294115d79341" class="numbered-list" start="27"><li><strong> </strong><mark class="highlight-blue">What are the use cases of ML? [27-32]</mark><figure id="1170d563-38cd-4cde-bac3-2cbf68cc4348" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2035.png"><img style="width:1125px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2035.png"/></a></figure><p id="d9aa8736-3710-40aa-b302-2293c452e66d" class="">Above figure - processes in Google Cloud Discover</p><figure id="14e7df2e-69e0-46c7-a9d9-93ee88290aeb" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2036.png"><img style="width:325px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2036.png"/></a></figure><figure id="39832ca6-ca0f-4798-9c7f-30f5b4546cf6" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2037.png"><img style="width:441px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2037.png"/></a></figure></li></ol><ol id="03ef4c25-45e0-4f20-af4e-bdb4325a2ec4" class="numbered-list" start="28"><li><mark class="highlight-blue">[1] </mark>The first way to think about machine learning use cases is, as a way to simplify rule-based systems. That was the essential idea behind RankBrain, our deep neural network for search ranking. It outperformed many human-built signals and we could replace many of the hand-coded rules with machine learning. The neural network ended up improving our search quality dramatically. Plus, the system could continually improve itself based on what users actually preferred<mark class="highlight-blue">. </mark><em>eg: Acme widgets smoke alarms systems.</em></li></ol><ol id="16090caf-b846-4df3-84f5-5e030ac9fff2" class="numbered-list" start="29"><li><em>eg: Netmarble. Here unusual action is skipping a step to complete a level.</em><figure id="cbdbed81-3d17-42a0-a29f-1cbf06e4ce2d" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2038.png"><img style="width:285px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2038.png"/></a></figure><blockquote id="dc5c9566-8b39-4bc9-a342-fb417c676947" class=""><mark class="highlight-brown">So, the key idea here, is to do a pilot project, and that success will embolden other departments to carry out their own machine learning projects. Be the pioneer.</mark></blockquote></li></ol><ol id="04f42f70-5672-42d3-ba78-82910b4c7f96" class="numbered-list" start="30"><li><mark class="highlight-red">[2] </mark>eg: Aucknet, Ocado, Ananda Developers<figure id="8d87c342-9df2-4af2-8353-eabdaec2597a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2039.png"><img style="width:555px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2039.png"/></a></figure><blockquote id="1cd2a32b-f537-494a-827f-d6b79cf9d02f" class=""><mark class="highlight-brown">The purpose of streamlining a business process is not to reduce costs, the purpose is to reduce drudgery, increase accuracy, gain more visibility into the business. In other words, it&#x27;s about doing more, not about spending less.</mark></blockquote></li></ol><ol id="0bde6aed-266b-487e-bd95-294701b29034" class="numbered-list" start="31"><li><mark class="highlight-yellow">[4]</mark> Unstructured data is data that can&#x27;t be easily compared. Language is just one example of unstructured data. Other examples include pictures, videos, sounds, etc. All of these are examples of data that you cannot easily hold in a relational database. Bloomberg aggregates financial news, data, and analytics worldwide, but disseminating that data across all languages proved to be a challenge. Google Translate allowed Bloomberg to bring all that data to their customers regardless of language. This table shows a subset of the language pairs available in the Translation API. There are 97 pairs in all. Do you have customers all over the world? Do you have dynamic content like product reviews? Then use automatic translation to serve them. Are you a marketplace with buyers and sellers who don&#x27;t speak a common language? Use a translation service to connect them seamlessly.<figure id="9f8b4c89-f71d-474d-820f-57b263458d21" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2040.png"><img style="width:261px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2040.png"/></a></figure><p id="0f1a4b45-8779-40f7-b2a8-7643b9072e3d" class=""><em>more eg: Kewpie (baby food), Arcules</em></p></li></ol><ol id="208a4616-7fb7-44a8-ad68-3da17022d084" class="numbered-list" start="32"><li><mark class="highlight-blue">[5] , </mark><mark class="highlight-red">[6]</mark><mark class="highlight-blue"> </mark>Personalization allows a business to scale, to reach more customers and to provide services in context, in the moment. The primary way that personalization is done using machine learning is with what we call recommendation systems or recommenders. You see recommenders all the time. They&#x27;re the most common form of machine learning that end-users are faced with. Recommenders help you find content that goes together. Content that you&#x27;re looking for or that you didn&#x27;t know that you wanted. <em>eg: WeightWacthers.</em><p id="3513c9fd-f7a2-4f8f-b1fe-957a13168d31" class="">There are many advantages of Persoanlization.<div class="indented"><figure id="f750494e-80df-4f2d-bde2-2d8aaf5b8d0b" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2041.png"><img style="width:256px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2041.png"/></a></figure><figure id="8dcc9043-9b7f-4816-bcf7-7e3ee5122c84" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2042.png"><img style="width:268px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2042.png"/></a></figure><figure id="1a6693d3-a66b-4d2d-968e-43071066b521" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2043.png"><img style="width:288px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2043.png"/></a></figure></div></p><p id="7336e764-5fc2-4636-9f9d-28e209ff7426" class="">Any businesses stock what customers within 10 miles want from them. Radio stations choose programming that nearby listeners like etc. This pressure to serve a small local consumer base meant that niche products often weren&#x27;t worth stocking. But e-commerce and machine-learning changed all of that. According to an article in Wired by Chris Anderson, in 1988, a book called &#x27;Touching the Void&#x27; was published. The book told the story of a near death experience in the Peruvian Andes, but somehow went out of print. A decade later in the era of the Internet, &#x27;Into Thin Air&#x27; was published and became hugely popular. Publishers were surprised to see there was suddenly demand for &#x27;Touching the Void&#x27;. A few years earlier, no retailer would have been able to profitably stock a product that was in the long tail as &#x27;Touching the Void&#x27; was. But with the advantage of a larger pool of consumers and the data and using machine-learning, Amazon was able to recognize the appeal of this old product and begin marketing it. <strong>Thus Personalization allows a business to serve the long tail. </strong></p></li></ol><ol id="385651f2-c9ce-4c06-bd22-7023fb122e6b" class="numbered-list" start="33"><li><blockquote id="7dfbfd7f-0d7e-4625-b9b9-e006e509f146" class="block-color-brown">I was in a subway station called Roppongi, and Maps told me that I was on floor number two. How did maps know? Whatever the data sources it uses, wi-fi points, barometric pressure, typical walking speed it&#x27;s pretty obvious this cannot be a simple set of rules. Plus, of course, you need the relevant data to train the model, and the relevant data to keep the model remaining fresh. And once you have the data, you can now use machine learning to avoid having to write the logic. Maps here is anticipating information that you might want to know if you are in a multi-story building. What else can Maps anticipate? Looking at the map, still in Japan, I glance at my phone between meetings and notice that I was getting a recommendation. Maps is now connecting my history, that I like art, that I like museums, that I&#x27;m in Japan, to now recommend things to me. This is even more of a data problem. <strong>The machine learning is what allows the original limited how-to-get-from-point-a-to-point-b map to now become a virtual assistant.</strong></blockquote><figure id="0e545464-e50d-4c4a-abd0-e0719c7a9b4f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2044.png"><img style="width:580px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2044.png"/></a></figure><p id="d0fa1643-8e0a-4778-a995-7c4ff0a58bcf" class="">So machine learning is about <strong>scaling beyond hand written rules.</strong> But then you start being able to do things that you could never achieve if you are hand writing rules. So think about your business. Your business analysts today are essentially looking only at the bulk of your business, the 80% of things that 20% do. You may be thinking of machine learning as a way to do the things in the middle, of being able to take the data you happen to have and training a machine learning model. But think of machine learning as a way to get to the things on the right (tail end), of being able to personalize your services for each of your customers. And notice the question at the bottom of the card on the right, asking for user feedback to keep improving the model.</p></li></ol><ol id="4e4e7b02-7736-4180-9d03-f72d234fd238" class="numbered-list" start="34"><li><mark class="highlight-blue">creative uses of ML [34-35] </mark>PART 1<mark class="highlight-blue">: </mark>super-resolution, create new content (NSynth, Magenta - music, style transfer - paintings, etc)</li></ol><ol id="35a05f6b-3dd0-4619-b7cb-e56d3921c8d2" class="numbered-list" start="35"><li>PART 2: <em>eg: bicycle rental. </em>Even though rides have many characteristics, there&#x27;s a limit to how fine-grained your analytics can go, because with every new dimension you aggregate on, you reduce the number of rentals per bin. Thinking back, there were already bins that were nearly empty after splitting by day of week and station. Fundamentally, this is where machine learning can help. Machine learning can help you predict the value for things that haven&#x27;t happened before, such as rentals on a particular day of the week, at a particular station based on similar stations.<figure id="bfa1d027-3dee-4925-82dd-0549f40dbcb6" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2045.png"><img style="width:268px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2045.png"/></a></figure><p id="a9905ae2-8d58-47cf-abae-218c36ff68f4" class="">PART 3: In 2018, AirAsia established a groundwork to use machine learning to optimize pricing for a range of services. They used Google Cloud Machine Learning Engine to sort and predict demand for ancillary services such as baggage, seats, and meals. For a low-cost carrier, a good stream of revenue comes from these ancillary services, so it&#x27;s very important to accurately predict demand for these services and be prepared. For example, to make sure that a meal is in stock when a customer wants to purchase it. There are lots of factors that going to being able to successfully predict the number of vegetarian meals that AirAsia needs to stock. It&#x27;s not as simple as knowing the size of the plane. Planes to and from India, for example, will tend to have a lot more vegetarians. But not just that, the time of day probably matters, as does which flight is connected to this one. After all, you can&#x27;t just stop the plane and pick up a vegetarian meal. The more factors there are that you have to balance, the more useful machine learning becomes.</p></li></ol><ol id="9cd530fb-72ea-4fbe-b5a3-01031ce47272" class="numbered-list" start="36"><li>Up until this point, we have been talking about machine learning models as if they stand alone. Yet, when we talked about real companies that use machine learning, whether it is Netmarble or AirAsia, you found that we were talking about a set of machine learning models that address a set of business needs. That&#x27;s because machine learning <mark class="highlight-blue">models don&#x27;t exist in isolation</mark>. You almost never built and put into production a single ML model, just like putting into production a software library. What you put into production are applications that use a software library, and that is true of machine learning also. You will put into production applications that use machine learning, and these applications won&#x27;t use just one ML model, they will use many. So an important design consideration is that you should think about how to create a seamless experience out of many models. <em>eg: Google Translate.</em><figure id="fdb0095b-8752-4cbd-abf1-f3fe9f1cc1b6" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2046.png"><img style="width:1055px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2046.png"/></a></figure></li></ol><ol id="9d4af3b1-3e73-476f-a44e-6aa179e87571" class="numbered-list" start="37"><li><mark class="highlight-teal">Activity: Generating Novel Rhythms with ML</mark></li></ol><ol id="a3054044-74f8-4dc9-8ea7-4adb7c2da7c5" class="numbered-list" start="38"><li>Final module of this course includes: <figure id="1e5eff55-f826-4fd2-85cc-08ec316594ff" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2047.png"><img style="width:234px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2047.png"/></a></figure></li></ol><ol id="1e1d88ca-cda8-496a-ae31-534dd0403e15" class="numbered-list" start="39"><li><mark class="highlight-blue">Seven actions as part of your data strategy [39-41].</mark> [1] Respect the opportunity- eg: movie recommendation system In traditional data analytics, you start with the logic and then collect data to apply that logic. With machine learning, you start with data and then apply a standard algorithm to your data to obtain predictions. Once you identify the need to capture what movies users are watching, you can get a bit more fine-grained.<figure id="481d21d5-82bd-424c-8c13-d8978cbee24f" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2048.png"><img style="width:292px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2048.png"/></a></figure></li></ol><ol id="59c9ee51-cc46-4919-b0e2-30e42b43e74b" class="numbered-list" start="40"><li><mark class="highlight-red">[2]</mark> , <mark class="highlight-yellow">[3]</mark> The second thing you need to do as part of your data strategy, is to break down data silos. It&#x27;s important to have all the data organized in such a way that you can query together, and create an ML training dataset. Why do we say that? Even if there&#x27;s a culture of data sharing, the problem is that your data is spread throughout the organization, and stored in different databases. No one will give an ML engineer access to their production databases. Even if they have a cluster on which they have a copy of their data, they&#x27;re concerned that the ML person will take all the their compute. So the correct technical solution is to separate compute from storage. In other words, built a data warehouse. Then all that the other organization needs to do is to provide access to the data. Then, whichever department queries data, pays for their own compute. This is the principle behind Google <em><strong>BigQuery</strong></em>.</li></ol><ol id="bc54d1ba-c979-4837-b2dc-66d6ad5e1016" class="numbered-list" start="41"><li><mark class="highlight-teal">[4]</mark> - <mark class="highlight-red">[6] </mark>Building a dashboard is one of the best ways to understand your data. Dashboards are visualizations of your data that can be seen widely across the company. Use tools such as Data Studio, Looker, Tableau, etc, connected to your data warehouse.<figure id="bdb5f4a7-7411-4e3f-86fb-803faf07d192" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2049.png"><img style="width:324px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2049.png"/></a></figure><p id="e4fbaa48-3054-430e-982a-35ff4be1ada6" class="">Use technologies like vision API, Natural Language API, Auto ML texts, and Auto ML vision, to enrich your unstructured data.</p><p id="34375c6a-e92a-4ef9-8d3d-81b682d0bb74" class="">
+</p><figure id="bfe6f761-58a3-40f9-a778-f12baf5189dc" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2050.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2050.png"/></a></figure><p id="95797bf3-0fd4-4345-b491-ba08041e524d" class="">Just as a global infrastructure free warehouse such as BigQuery was useful for collecting historical data, a global infrastructure free messaging systems such as Cloud Pub/Sub is also necessary for collecting real time data. As with BigQuery, the department that owns the data in Pub/Sub can provide access to others without assuming the cost of their compute.</p><figure id="4f22f4f6-3671-43a3-85ca-6cda87f21b56" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2051.png"><img style="width:192px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2051.png"/></a></figure></li></ol><ol id="8a23530a-1849-40e9-80ee-9914b4aa1d3e" class="numbered-list" start="42"><li><mark class="highlight-teal">Lab : Predicting visitor purchases with BQML model.</mark></li></ol><ol id="4068c000-1bd8-47a9-a9cd-635528400299" class="numbered-list" start="43"><li>When you&#x27;re implementing ML use cases, it&#x27;s important to <mark class="highlight-blue">balance </mark>data <mark class="highlight-blue">access </mark>within your company, against the <mark class="highlight-blue">security [43 - 45]</mark> implications of that access. <figure id="5bfebe40-e2b3-4a7e-b1c3-91660c6852b3" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2052.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2052.png"/></a></figure><p id="44b176f9-f05d-40b9-998d-787821592154" class="">To create a model that returns users specific results, you typically need to access to user specific data. Fortunately there are techniques you can use to remove some sensitive data from the data sets, while still training effective ML models.</p><figure id="2805c923-7f45-40a8-b3fa-e43fa1c0f6bc" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2053.png"><img style="width:312px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2053.png"/></a></figure><figure id="c44be533-fc54-4db5-8289-c5b27fc1dc0c" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2054.png"><img style="width:284px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2054.png"/></a></figure><figure id="e9a50c9d-f5d4-4991-bdff-6d53a82aa877" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2055.png"><img style="width:293px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2055.png"/></a></figure><figure id="10374b61-740c-4d95-9d19-5df964d2b9d6" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2056.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2056.png"/></a></figure><p id="fbb838c2-9bf0-49c4-8127-44b3309982df" class="">When data is restricted to specific columns and structured datasets, you can create a view that doesn&#x27;t provide access to these columns.</p><figure id="796365fa-981d-4b79-a3f5-996b2afc3712" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2057.png"><img style="width:608px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2057.png"/></a></figure><figure id="be589d73-2519-4eec-9278-e88e16de30bf" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2058.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2058.png"/></a></figure><p id="444ec9d7-ffac-4134-8b90-0dd70e9dc579" class="">
+</p><figure id="f222fb4e-d2e3-40eb-8a3d-217c0f75d50c" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2059.png"><img style="width:295px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2059.png"/></a></figure><p id="dab3971c-9d83-489b-aaa9-9f9290f2635e" class="">If some or all of the sensitive data fields can be masked without affecting ML training. Then several techniques can be used to mask that data. The most common approach, is to use substitution cipher, which involves replacing all occurrences of a plain text identifier by its hashed and all encrypted value.</p></li></ol><ol id="a9cf169a-ad11-486b-a9ae-9b279a137ea3" class="numbered-list" start="44"><li><mark class="highlight-teal">Demo: data masking</mark></li></ol><ol id="199f6617-338d-4a1b-898e-137115e3b6e5" class="numbered-list" start="45"><li>You can decrease the precision or granularity of data in order to make it more difficult to identify sensitive data within the data set. You trade accuracy for sensitivity. GPS locations - decimal based latitudes and longitudes rounded up to single digit precision. Zip codes - US zip codes in a five plus four form can identify a household but can be coarsened to include just the first three digits. This is a zip three format. This limits the ability to identify a specific user by putting many users in the same bucket. IP address - a good coarsening technique is to zero out the last octet of the IPv4 addresses. That is the last eighty bits if you are using IPv6. Numeric quantities - numbers can be binned to make them less likely to identify an individual. For instance, an exact birthday is often not required, just the decade or year in which a user was born. And similar numeric fields can be coarsened by substituting ranges.<figure id="886e89c8-39dc-4791-8d44-924bef616d71" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2060.png"><img style="width:206px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2060.png"/></a></figure><figure id="bf8de676-26de-4cac-9709-356237594d64" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2061.png"><img style="width:284px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2061.png"/></a></figure><figure id="6d66be53-2133-42f5-841c-eb8061a2b944" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2062.png"><img style="width:303px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2062.png"/></a></figure><figure id="0c74ed1d-df71-463e-a50f-75c0cf3a2182" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2063.png"><img style="width:267px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2063.png"/></a></figure><figure id="021e92d9-0143-4272-b448-c9eb03676436" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2064.png"><img style="width:292px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2064.png"/></a></figure></li></ol><ol id="87f2fe78-5adb-4879-ab03-ede22c9e0518" class="numbered-list" start="46"><li>As long as the use cases fall along the most popular, most common sets of use cases, you don&#x27;t really need expert researchers. Your existing information technology and business analysts teams can be up skilled. The IT folks can learn how to use Auto ML. The business analyst teams can learn how to use BigQuery ML.<figure id="97405a90-1019-46c8-ab6a-58e55a066524" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2065.png"><img style="width:268px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2065.png"/></a></figure><figure id="f176dec4-5d8b-4693-9a76-7a8154362613" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2066.png"><img style="width:266px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2066.png"/></a></figure><p id="553be10c-cc5b-4f59-bcb8-7067f958cd1b" class=""><mark class="highlight-blue">Your team </mark>as a whole, should know how to build end-to-end machine learning solutions, to real world problems. Data engineers build pipelines to routinely ingest and transform data. Data analysts build dashboards and create reports to support decision-making throughout the organization. You don&#x27;t want your ML engineers building an ML Model to automate any decision-making, until your data analytics team has done the analysis by hand a few times, and you learn that this is a decision your business tends to make routinely. Finally, ML engineers build predictive models using curated data.</p><p id="89013adf-8756-4821-a873-8d3cc2b7fff4" class="">What a team should look like (size vary, approximate ratio remains same:</p><figure id="3e5e42e0-2ed1-44d0-8de9-2ff35b080a7b" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2067.png"><img style="width:1011px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2067.png"/></a></figure></li></ol><ol id="476ca829-d517-459f-9b1d-a6dca4a113ad" class="numbered-list" start="47"><li><mark class="highlight-blue">Creating a culture of innovation:</mark><figure id="0c1116bf-6bb3-49e9-8955-f502e0760d53" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2068.png"><img style="width:523px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2068.png"/></a></figure><figure id="52b3b3a2-7f2b-4dcd-baff-2d683893d903" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2069.png"><img style="width:207px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2069.png"/></a></figure><figure id="c3916d79-fb12-459c-a117-1d67f003227a" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2070.png"><img style="width:557px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2070.png"/></a></figure><p id="7b0737e1-9909-4756-b114-b73e1207c502" class="">Launch and iterate requires a shift in mindset. It says that you don&#x27;t need to perfect something on paper first to be successful. In fact you don&#x27;t even need to have every detail figured out. Launch and iterate encourages experimentation and learning from each output with help from your peers, leadership and feedback from your customers. e<em>g: Google Glass.</em></p><figure id="f3a45206-3529-4060-8e88-1ff1a5e803d1" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2071.png"><img style="width:384px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2071.png"/></a></figure><figure id="2ed84328-da6d-486e-995e-caf7c52a45fd" class="image"><a href="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2072.png"><img style="width:240px" src="Managing%20Machine%20Learning%20Projects%20with%20Google%20Clo%2080d1ba6aa06c4ecdbdfacb7c02b301db/Untitled%2072.png"/></a></figure></li></ol><hr id="1f2aa8ea-bc6e-4c13-b12d-2e67bdfb9e31"/><p id="71a71bdd-dba5-427a-865d-4c947b9e9814" class="">THE END</p><hr id="d0c3c52e-02d3-45b8-8d69-b590b0d680cf"/><p id="4ca1281d-bc5e-45ef-b21c-8916806416a5" class="">
+</p><p id="70e66f72-85ce-4eed-a6d1-4e99cf1e804a" class="">If you liked this note and want to buy me a coffee (which I would love!!!) click here.</p><p id="a91db6ad-2033-4f7d-99d2-9a23047e47c3" class="">
+</p><ul id="78d57fdb-ddc2-4067-996b-18ca58668215" class="toggle"><li><details open=""><summary>Formatting guidelines:</summary><p id="6bf3c3db-d44e-4e11-959d-62d95fc139a3" class=""><strong>Bold</strong>: Important</p><p id="1f114418-89e9-4e4d-88bc-6ce7940a8db3" class=""><em>Italic</em>: Examples </p><p id="ecd37c10-cbd6-46fe-9650-b9600b2d1583" class=""><em><strong>Bold Italic: </strong></em>Key terms</p><p id="9beba598-c1aa-45b3-81ae-b0ef26bfb889" class="">Every numbered point is emphasizing a key idea, and that is highlighted in <mark class="highlight-blue">blue text</mark>. If those ideas are questions, then their answers have been represented in <mark class="highlight-purple">purple text</mark>. <mark class="highlight-teal">Green text</mark> denotes lab or activity.</p></details></li></ul><p id="67ffdab3-1542-4829-863f-ffe8d03e6756" class="">
+</p><p id="ccb5f1f4-5e28-498b-9c1b-834fabd9e49e" class="">Using this note in conjunction with the <a href="https://www.coursera.org/learn/machine-learning-business-professionals">course</a> will help you grasp the note better.</p><p id="5e0f84c8-fb58-4445-be8b-f309dad856a4" class="">
+</p><p id="17256207-098f-45e5-a58f-55e67d114488" class="">
+</p></div></article></body></html>
